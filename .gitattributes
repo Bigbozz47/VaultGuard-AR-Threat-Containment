@@ -1,0 +1,12 @@
+# Enforce LF line endings in repo
+* text=auto eol=lf
+
+# Unity specific
+*.cs text diff=csharp
+*.shader text
+*.mat text
+*.meta text
+*.unity text
+*.prefab text
+*.anim text
+*.controller text
