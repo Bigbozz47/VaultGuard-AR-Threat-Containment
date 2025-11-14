@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     private AIManager aiManager;
 
     [Header("Status Game")]
-    [SerializeField] private int skorPerJawabanBenar = 10;
+    [SerializeField] private int skorPerJawabanBenar = 25;
     
     // Variabel privat untuk mengelola state
     private GameObject virusAktif;     // Virus yang sedang diklik
