@@ -1,0 +1,84 @@
+{
+  "daftar_quiz": [
+    {
+      "pertanyaan": "Apa ciri utama dari serangan Phishing?",
+      "pilihan_a": "Mengenkripsi file korban dan meminta tebusan",
+      "pilihan_b": "Meminta kredensial login melalui email atau website palsu",
+      "pilihan_c": "Menyembunyikan diri di background sistem",
+      "pilihan_d": "Menguras resource CPU untuk mining cryptocurrency",
+      "jawaban_benar": "B",
+      "topik_virus": "Phishing",
+      "tingkat_kesulitan": "mudah"
+    },
+    {
+      "pertanyaan": "Apa yang dilakukan Ransomware terhadap file korban?",
+      "pilihan_a": "Menghapus file secara permanen",
+      "pilihan_b": "Mengenkripsi file dan meminta tebusan untuk dekripsi",
+      "pilihan_c": "Mengirim file ke server hacker secara diam-diam",
+      "pilihan_d": "Mengubah ekstensi file menjadi tidak terbaca",
+      "jawaban_benar": "B",
+      "topik_virus": "Ransomware",
+      "tingkat_kesulitan": "mudah"
+    },
+    {
+      "pertanyaan": "Apa fungsi utama dari Two-Factor Authentication (2FA)?",
+      "pilihan_a": "Mempercepat proses login ke aplikasi",
+      "pilihan_b": "Menambah lapisan keamanan dengan verifikasi ganda",
+      "pilihan_c": "Mengenkripsi password secara otomatis",
+      "pilihan_d": "Membuat backup akun secara otomatis",
+      "jawaban_benar": "B",
+      "topik_virus": "General Security",
+      "tingkat_kesulitan": "sedang"
+    },
+    {
+      "pertanyaan": "Bagaimana cara kerja Trojan Horse dalam konteks malware?",
+      "pilihan_a": "Menyebar melalui email dengan lampiran berbahaya",
+      "pilihan_b": "Menyamar sebagai program legitimate untuk menyusup ke sistem",
+      "pilihan_c": "Mengenkripsi file dan meminta pembayaran",
+      "pilihan_d": "Melakukan DDoS attack ke server",
+      "jawaban_benar": "B",
+      "topik_virus": "Trojan",
+      "tingkat_kesulitan": "sedang"
+    },
+    {
+      "pertanyaan": "Apa yang dimaksud dengan Social Engineering dalam cybersecurity?",
+      "pilihan_a": "Teknik hacking menggunakan tools khusus",
+      "pilihan_b": "Memanipulasi psikologi manusia untuk mendapatkan informasi",
+      "pilihan_c": "Metode enkripsi data yang kuat",
+      "pilihan_d": "Sistem backup data otomatis",
+      "jawaban_benar": "B",
+      "topik_virus": "Social Engineering",
+      "tingkat_kesulitan": "sedang"
+    },
+    {
+      "pertanyaan": "Apa perbedaan utama antara Virus dan Worm?",
+      "pilihan_a": "Virus memerlukan host file, Worm dapat menyebar sendiri",
+      "pilihan_b": "Virus lebih berbahaya daripada Worm",
+      "pilihan_c": "Worm hanya menyerang sistem Windows",
+      "pilihan_d": "Tidak ada perbedaan, keduanya sama",
+      "jawaban_benar": "A",
+      "topik_virus": "Malware",
+      "tingkat_kesulitan": "sulit"
+    },
+    {
+      "pertanyaan": "Manakah yang BUKAN merupakan indikator email phishing?",
+      "pilihan_a": "Alamat email pengirim yang mencurigakan",
+      "pilihan_b": "Urgency atau tekanan untuk segera bertindak",
+      "pilihan_c": "Email yang dipersonalisasi dengan nama lengkap Anda",
+      "pilihan_d": "Link yang mengarah ke website berbeda dari yang tertera",
+      "jawaban_benar": "C",
+      "topik_virus": "Phishing",
+      "tingkat_kesulitan": "sulit"
+    },
+    {
+      "pertanyaan": "Apa yang harus dilakukan jika komputer Anda terinfeksi Ransomware?",
+      "pilihan_a": "Segera bayar tebusan agar file dikembalikan",
+      "pilihan_b": "Matikan internet, isolasi perangkat, dan hubungi ahli keamanan",
+      "pilihan_c": "Restart komputer beberapa kali",
+      "pilihan_d": "Install antivirus baru secara langsung",
+      "jawaban_benar": "B",
+      "topik_virus": "Ransomware",
+      "tingkat_kesulitan": "sedang"
+    }
+  ]
+}

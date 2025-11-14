@@ -1,22 +1,146 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
+using UnityEngine.Networking;
 
+/// <summary>
+/// Manager utama untuk menangani quiz system dengan AI integration
+/// Bertanggung jawab untuk: loading quiz dari local backup, request quiz dari AI API,
+/// validasi jawaban pemain, dan error handling dengan fallback mechanism
+/// </summary>
 public class AIManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    #region Singleton Pattern
+    
+    /// <summary>Singleton instance untuk global access</summary>
+    public static AIManager Instance { get; private set; }
+    
+    #endregion
+    
+    #region API Configuration
+    
+    [Header("AI API Configuration")]
+    [SerializeField] private string apiEndpoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent";
+    [SerializeField] private string apiKey = ""; // ISI DI INSPECTOR, JANGAN HARDCODE!
+    
+    [Header("API Settings")]
+    [SerializeField] private float requestTimeout = 15f;
+    [SerializeField] private int maxRetries = 3;
+    
+    [Header("Demo Mode")]
+    [SerializeField] private bool forceOfflineMode = false;
+    
+    #endregion
+    
+    #region Private Variables
+    
+    private QuizDatabase quizDatabase;
+    private const string BACKUP_FILE_NAME = "quiz_backup";
+    private int activeRequests = 0;
+    private const int MAX_CONCURRENT_REQUESTS = 3;
+    private StringBuilder promptBuilder;
+    
+    #endregion
+    
+    #region Unity Lifecycle
+    
+    void Awake()
     {
-        
+        // Singleton implementation dengan DontDestroyOnLoad
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+            InitializeQuizDatabase();
+            promptBuilder = new StringBuilder(1024);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
+    
+    #endregion
+    
+    #region Initialization
+    
+    /// <summary>
+    /// Inisialisasi database quiz dari Resources folder
+    /// </summary>
+    private void InitializeQuizDatabase()
+    {
+        try
+        {
+            TextAsset jsonFile = Resources.Load<TextAsset>(BACKUP_FILE_NAME);
+            
+            if (jsonFile != null)
+            {
+                quizDatabase = JsonUtility.FromJson<QuizDatabase>(jsonFile.text);
+                
+                if (quizDatabase != null && quizDatabase.daftar_quiz != null)
+                {
+                    VaultGuardLogger.LogSuccess("AIManager", $"Quiz database loaded successfully. Total quiz: {quizDatabase.daftar_quiz.Count}");
+                }
+                else
+                {
+                    VaultGuardLogger.LogError("AIManager", "Quiz database structure invalid!");
+                }
+            }
+            else
+            {
+                VaultGuardLogger.LogError("AIManager", "quiz_backup.json tidak ditemukan di Resources folder!");
+            }
+        }
+        catch (System.Exception e)
+        {
+            VaultGuardLogger.LogError("AIManager", $"Error loading quiz database: {e.Message}");
+        }
+    }
+    
+    #endregion
+    
+    #region Local Quiz Functions
+    
+    /// <summary>
+    /// Load quiz berdasarkan topik virus tertentu dari database lokal
+    /// Fungsi ini akan dipanggil oleh GameManager atau sebagai fallback jika AI gagal
+    /// </summary>
+    /// <param name="topikVirus">Nama topik virus (Phishing, Ransomware, Trojan, dll)</param>
+    /// <returns>QuizData atau null jika tidak ditemukan</returns>
+    public QuizData LoadQuiz(string topikVirus)
+    {
+        // Validasi input
+        if (string.IsNullOrWhiteSpace(topikVirus))
+        {
+            VaultGuardLogger.LogError("AIManager", "Topic virus tidak boleh kosong!");
+            return null;
+        }
+        
+        // Sanitize input
+        topikVirus = topikVirus.Trim();
+        
+        if (quizDatabase == null || quizDatabase.daftar_quiz == null)
+        {
+            VaultGuardLogger.LogError("AIManager", "Quiz database belum diinisialisasi!");
+            return null;
+        }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        // Cari quiz yang sesuai dengan topik
+        QuizData quiz = quizDatabase.daftar_quiz.Find(q => q.topik_virus == topikVirus);
+
+        if (quiz != null)
+        {
+            VaultGuardLogger.Log("AIManager", $"Quiz loaded for topic '{topikVirus}': {quiz.pertanyaan}");
+            return quiz;
+        }
+        else
+        {
+            VaultGuardLogger.LogWarning("AIManager", $"Quiz dengan topik '{topikVirus}' tidak ditemukan! Using random fallback.");
+            // Fallback: return quiz random
+            return GetRandomQuiz();
+        }
     }
-<<<<<<< Updated upstream
-=======
 
     /// <summary>
     /// Get random quiz dari database (fallback mechanism)
@@ -367,9 +491,9 @@ public class AIManager : MonoBehaviour
         {
             // Response structure dari Gemini:
             // { "candidates": [ { "content": { "parts": [ { "text": "actual json here" } ] } } ] }
-
-            GeminiResponse geminiResp = JsonUtility.FromJson<GeminiResponse>(jsonResponse);
             
+            GeminiResponse geminiResp = JsonUtility.FromJson<GeminiResponse>(jsonResponse);
+
             if (geminiResp?.candidates != null && geminiResp.candidates.Length > 0)
             {
                 string quizJsonText = geminiResp.candidates[0].content.parts[0].text;
@@ -627,5 +751,44 @@ public class AIManager : MonoBehaviour
 #endif
     
     #endregion
->>>>>>> Stashed changes
 }
+
+#region Gemini API Response Helper Classes
+
+/// <summary>
+/// Root response structure dari Gemini API
+/// </summary>
+[System.Serializable]
+public class GeminiResponse
+{
+    public GeminiCandidate[] candidates;
+}
+
+/// <summary>
+/// Candidate structure dalam Gemini response
+/// </summary>
+[System.Serializable]
+public class GeminiCandidate
+{
+    public GeminiContent content;
+}
+
+/// <summary>
+/// Content structure dalam Gemini response
+/// </summary>
+[System.Serializable]
+public class GeminiContent
+{
+    public GeminiPart[] parts;
+}
+
+/// <summary>
+/// Part structure yang berisi actual text response
+/// </summary>
+[System.Serializable]
+public class GeminiPart
+{
+    public string text;
+}
+
+#endregion
