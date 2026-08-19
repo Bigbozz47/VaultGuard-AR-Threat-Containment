@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QCARConfig>
+  <Tracking>
+    <ImageTarget name="testing" size="1.000000 1.000000" />
+    <ImageTarget name="virus_merah1" size="1.000000 1.000000" />
+    <ImageTarget name="virus_dracula1" size="1.000000 1.000000" />
+    <ImageTarget name="monster_orange1" size="1.000000 1.000000" />
+    <ImageTarget name="monster_merah1" size="1.000000 1.000000" />
+  </Tracking>
+</QCARConfig>
