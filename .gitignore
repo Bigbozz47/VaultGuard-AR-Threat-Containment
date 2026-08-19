@@ -1,0 +1,12 @@
+# Large Unity/package files
+*.tgz
+*.blend1
+
+# Unity generated folders
+Library/
+Temp/
+Obj/
+Build/
+Builds/
+Logs/
+UserSettings/
